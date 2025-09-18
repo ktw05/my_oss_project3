@@ -27,14 +27,19 @@
             const inputtext = document.getElementById('inputtext');
 
             addbtn.addEventListener('click', () => {
-                const newtext = document.createElement('li');
-                newtext.textContent = inputtext.value;
-                document.body.appendChild(newtext);
+                const items = inputtext.value.split(',').map(item => item.trim()).filter(item => item !== '');
+
+                items.forEach(item => {
+                    const newtext = document.createElement('li');
+                    newtext.textContent = item;
+                    document.body.appendChild(newtext);
+                });
+
                 inputtext.value = '';
                 inputtext.focus();
             });
 
-            //전부 삭제
+            // 전부 삭제
             removebtn.addEventListener('click', () => {
                 const allDivs = document.querySelectorAll('li');
                 allDivs.forEach(div => div.remove());
