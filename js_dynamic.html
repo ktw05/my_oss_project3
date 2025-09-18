@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic</title>
+    <style>
+        body {
+            background-color: aquamarine;
+        }
+
+        #addbtn {
+            background-color: blue;
+            color: white;
+        }
+
+        #removebtn {
+            background-color: red;
+            color: white;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            const addbtn = document.getElementById('addbtn');
+            const removebtn = document.getElementById('removebtn');
+            const inputtext = document.getElementById('inputtext');
+
+            addbtn.addEventListener('click', () => {
+                const newtext = document.createElement('li');
+                newtext.textContent = inputtext.value;
+                document.body.appendChild(newtext);
+                inputtext.value = '';
+                inputtext.focus();
+            });
+
+            //전부 삭제
+            removebtn.addEventListener('click', () => {
+                const allDivs = document.querySelectorAll('li');
+                allDivs.forEach(div => div.remove());
+                inputtext.value = '';
+                inputtext.focus();
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <h2>기숙사 같은 방 멤버</h2>
+    <input type="text" id="inputtext" required></input>
+    <button id="addbtn">추가</button>
+    <button id="removebtn">삭제</button>
+</body>
+
+</html>
