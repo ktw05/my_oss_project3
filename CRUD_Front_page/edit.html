@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>상품 수정</title>
+    <link rel="stylesheet" href="my.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .form-status {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            color: #fff;
+            background-color: #007bff;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <h1>상품 정보 수정</h1>
+    </header>
+
+    <main class="container">
+        <section class="form-container">
+            <h2 class="visually-hidden">상품 정보 수정 입력 폼</h2>
+            <div id="status-message" class="form-status"></div>
+
+            <form id="product-edit-form" action="#" method="post">
+                <input type="hidden" id="productId" name="productId" />
+
+                <div class="form-group">
+                    <label for="productName">상품명 <span class="required">*</span></label>
+                    <input type="text" id="productName" name="productName" required aria-required="true" />
+                    <small id="name-error" class="error-message"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">분류 <span class="required">*</span></label>
+                    <select id="category" name="category" required aria-required="true">
+                        <option value="가방">가방</option>
+                        <option value="화장품">화장품</option>
+                        <option value="향수">향수</option>
+                        <option value="신발">신발</option>
+                        <option value="주얼리">주얼리</option>
+                    </select>
+                    <small id="category-error" class="error-message"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="price">가격 (원) <span class="required">*</span></label>
+                    <input type="number" id="price" name="price" required aria-required="true" min="0" />
+                    <small id="price-error" class="error-message"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="stock">재고 수량 <span class="required">*</span></label>
+                    <input type="number" id="stock" name="stock" required aria-required="true" min="0" />
+                    <small id="stock-error" class="error-message"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="imageUrl">이미지 URL</label>
+                    <input type="url" id="imageUrl" name="imageUrl" />
+                </div>
+
+                <div class="form-group">
+                    <label for="description">상세 설명</label>
+                    <textarea id="description" name="description" rows="5"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="button secondary" onclick="history.back()">취소</button>
+                    <button type="submit" class="button primary">수정 완료</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025. 상품 관리 시스템. 모든 권리 보유.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const products = [
+                {
+                    id: 1,
+                    name: '디올 레이디백',
+                    category: '가방',
+                    price: 8500000,
+                    stock: 5,
+                    imageUrl: 'https://images.dior.com/is/image/Dior/Y0992388_E30_G01_CD1-Lady-Dior-My-ABCDior-Bag--front-view?fmt=png-alpha',
+                    description: '아이코닉한 디자인의 레이디 디올 백입니다. 최고급 가죽 소재로 제작되어 우아함과 실용성을 동시에 갖춘 제품입니다.',
+                    registrationDate: '2025-09-18'
+                },
+                {
+                    id: 2,
+                    name: '디올 새들백',
+                    category: '가방',
+                    price: 6800000,
+                    stock: 2,
+                    imageUrl: 'https://images.dior.com/is/image/Dior/Y0014691_E01_G01_CD1-Saddle-Bag--front-view?fmt=png-alpha',
+                    description: '말 안장에서 영감을 받은 독특한 곡선 디자인이 특징인 새들백입니다. 다양한 룩에 포인트를 줄 수 있습니다.',
+                    registrationDate: '2025-09-15'
+                },
+                {
+                    id: 3,
+                    name: '디올 어딕트 립 글로우',
+                    category: '화장품',
+                    price: 49000,
+                    stock: 50,
+                    imageUrl: 'https://images.dior.com/is/image/Dior/Y0268590_E03_G01-Dior-Addict-Lip-Glow-Universal-Balm--front-view?fmt=png-alpha',
+                    description: '입술에 생기를 더해주는 디올의 시그니처 립밤입니다. 개인의 입술 수분에 반응하여 자연스러운 컬러를 연출합니다.',
+                    registrationDate: '2025-09-10'
+                },
+                {
+                    id: 4,
+                    name: '미스 디올 오 드 퍼퓸',
+                    category: '향수',
+                    price: 155000,
+                    stock: 30,
+                    imageUrl: 'https://images.dior.com/is/image/Dior/Y0996843_E03_G01-Miss-Dior-Eau-de-Parfum--front-view?fmt=png-alpha',
+                    description: '수천 송이 꽃이 피어나는 듯한 풍부하고 생기 넘치는 향을 담고 있습니다. 섬세하면서도 강렬한 여성의 매력을 표현합니다.',
+                    registrationDate: '2025-09-05'
+                },
+                {
+                    id: 5,
+                    name: '디올 오블리크 스니커즈',
+                    category: '신발',
+                    price: 1300000,
+                    stock: 10,
+                    imageUrl: 'https://images.dior.com/is/image/Dior/Y0526848_E03_G01-Dior-Oblique-Sneakers--front-view?fmt=png-alpha',
+                    description: '아이코닉한 디올 오블리크 패턴이 돋보이는 스니커즈입니다. 캐주얼하면서도 고급스러운 스타일을 완성해줍니다.',
+                    registrationDate: '2025-09-01'
+                }
+            ];
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = parseInt(urlParams.get('id'));
+            const product = products.find(p => p.id === productId);
+
+            if (product) {
+                // 기존 데이터로 폼 채우기
+                document.getElementById('productId').value = product.id;
+                document.getElementById('productName').value = product.name;
+                document.getElementById('category').value = product.category;
+                document.getElementById('price').value = product.price;
+                document.getElementById('stock').value = product.stock;
+                document.getElementById('imageUrl').value = product.imageUrl;
+                document.getElementById('description').value = product.description;
+            } else {
+                alert('수정할 상품 정보를 찾을 수 없습니다. 목록으로 돌아갑니다.');
+                window.location.href = 'index.html';
+            }
+
+            // 폼 제출 이벤트 핸들러 (유효성 검사 포함)
+            document.getElementById('product-edit-form').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const name = document.getElementById('productName');
+                const category = document.getElementById('category');
+                const price = document.getElementById('price');
+                const stock = document.getElementById('stock');
+
+                let isValid = true;
+                const statusMessage = document.getElementById('status-message');
+
+                // 에러 메시지 초기화
+                document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+                statusMessage.style.display = 'none';
+
+                // 1. 상품명: 최소 2자 이상
+                if (name.value.trim().length < 2) {
+                    document.getElementById('name-error').textContent = '상품명은 최소 2자 이상이어야 합니다.';
+                    isValid = false;
+                }
+
+                // 2. 분류: 반드시 선택
+                if (category.value === '') {
+                    document.getElementById('category-error').textContent = '분류를 선택해주세요.';
+                    isValid = false;
+                }
+
+                // 3. 가격: 0보다 큰 양수
+                if (price.value <= 0) {
+                    document.getElementById('price-error').textContent = '가격은 0보다 커야 합니다.';
+                    isValid = false;
+                }
+
+                // 4. 재고: 0 이상의 정수
+                if (stock.value < 0) {
+                    document.getElementById('stock-error').textContent = '재고 수량은 0 이상이어야 합니다.';
+                    isValid = false;
+                }
+
+                if (isValid) {
+                    // 유효성 검사 통과 시
+                    const isConfirmed = confirm('게시물을 수정할까요?');
+                    if (isConfirmed) {
+                        // 실제로는 서버에 데이터를 전송하는 로직이 여기에 들어갑니다.
+                        // alert('게시물이 성공적으로 수정되었습니다.');
+                        // window.location.href = 'view.html?id=' + productId; // 수정 후 상세 페이지로 이동
+
+                        // 메시지 창 표시
+                        statusMessage.textContent = '게시물이 성공적으로 수정되었습니다.';
+                        statusMessage.style.display = 'block';
+                    }
+                } else {
+                    // 유효성 검사 실패 시 첫 번째 에러 필드에 포커스
+                    const firstInvalid = document.querySelector('.error-message:not(:empty)');
+                    if (firstInvalid) {
+                        firstInvalid.previousElementSibling.focus();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

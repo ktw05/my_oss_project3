@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>상품 추가</title>
+    <link rel="stylesheet" href="my.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .form-status {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            color: #fff;
+            background-color: #28a745;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <h1>상품 추가</h1>
+    </header>
+
+    <main class="container">
+        <section class="form-container">
+            <h2 class="visually-hidden">새로운 상품 정보 입력</h2>
+            <div id="status-message" class="form-status"></div>
+            
+            <form id="product-form" action="#" method="post">
+                <div class="form-group">
+                    <label for="productName">상품명 <span class="required">*</span></label>
+                    <input type="text" id="productName" name="productName" placeholder="상품명을 입력하세요" required
+                        aria-required="true" />
+                    <small id="name-error" class="error-message"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">분류 <span class="required">*</span></label>
+                    <select id="category" name="category" required aria-required="true">
+                        <option value="">분류를 선택하세요</option>
+                        <option value="가방">가방</option>
+                        <option value="화장품">화장품</option>
+                        <option value="향수">향수</option>
+                        <option value="신발">신발</option>
+                        <option value="주얼리">주얼리</option>
+                    </select>
+                    <small id="category-error" class="error-message"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="price">가격 (원) <span class="required">*</span></label>
+                    <input type="number" id="price" name="price" placeholder="가격을 입력하세요" required aria-required="true"
+                        min="0" />
+                    <small id="price-error" class="error-message"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="stock">재고 수량 <span class="required">*</span></label>
+                    <input type="number" id="stock" name="stock" placeholder="재고 수량을 입력하세요" required
+                        aria-required="true" min="0" />
+                    <small id="stock-error" class="error-message"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="imageUrl">이미지 URL</label>
+                    <input type="url" id="imageUrl" name="imageUrl" placeholder="이미지 주소를 입력하세요" />
+                </div>
+
+                <div class="form-group">
+                    <label for="description">상세 설명</label>
+                    <textarea id="description" name="description" rows="5" placeholder="상품에 대한 상세 설명을 입력하세요"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="button secondary" onclick="location.href='index.html'">취소</button>
+                    <button type="submit" class="button primary">상품 추가</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025. 상품 관리 시스템. 모든 권리 보유.</p>
+    </footer>
+
+    <script>
+        document.getElementById('product-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById('productName');
+            const category = document.getElementById('category');
+            const price = document.getElementById('price');
+            const stock = document.getElementById('stock');
+
+            let isValid = true;
+            const statusMessage = document.getElementById('status-message');
+
+            // 에러 메시지 초기화
+            document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+            statusMessage.style.display = 'none';
+
+            // 1. 상품명: 최소 2자 이상
+            if (name.value.trim().length < 2) {
+                document.getElementById('name-error').textContent = '상품명은 최소 2자 이상이어야 합니다.';
+                isValid = false;
+            }
+
+            // 2. 분류: 반드시 선택
+            if (category.value === '') {
+                document.getElementById('category-error').textContent = '분류를 선택해주세요.';
+                isValid = false;
+            }
+
+            // 3. 가격: 0보다 큰 양수
+            if (price.value <= 0) {
+                document.getElementById('price-error').textContent = '가격은 0보다 커야 합니다.';
+                isValid = false;
+            }
+
+            // 4. 재고: 0 이상의 정수
+            if (stock.value < 0) {
+                document.getElementById('stock-error').textContent = '재고 수량은 0 이상이어야 합니다.';
+                isValid = false;
+            }
+
+            if (isValid) {
+                // 유효성 검사 통과 시
+                const isConfirmed = confirm('게시물이 추가됩니다. 계속하시겠습니까?');
+                if (isConfirmed) {
+                    // 실제로는 서버에 데이터를 전송하는 로직이 여기에 들어갑니다.
+                    // alert('게시물이 성공적으로 추가되었습니다.');
+                    // location.href = 'index.html'; // 성공 후 목록 페이지로 이동
+                    
+                    // 메시지 창 표시
+                    statusMessage.textContent = '게시물이 성공적으로 추가되었습니다.';
+                    statusMessage.style.display = 'block';
+
+                    // 폼 초기화
+                    this.reset();
+                }
+            } else {
+                // 유효성 검사 실패 시 첫 번째 에러 필드에 포커스
+                const firstInvalid = document.querySelector('.error-message:not(:empty)');
+                if (firstInvalid) {
+                    firstInvalid.previousElementSibling.focus();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

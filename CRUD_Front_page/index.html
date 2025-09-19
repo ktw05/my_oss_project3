@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DIOR Product List</title>
+    <link rel="stylesheet" href="my.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .product-list-grid {
+            display: grid;
+            gap: 30px;
+        }
+
+        @media (min-width: 768px) {
+            .product-list-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .product-list-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <h1>상품 목록</h1>
+    </header>
+
+    <main class="container">
+        <section class="action-bar">
+            <a href="add.html" class="button primary" aria-label="새로운 상품 추가 페이지로 이동">상품 추가</a>
+        </section>
+
+        <section class="product-list" aria-labelledby="product-list-title">
+            <h2 id="product-list-title" class="visually-hidden">등록된 상품 목록</h2>
+            <div id="product-container" class="product-list-grid" role="list"></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025. 상품 관리 시스템. 모든 권리 보유.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const products = [
+                {
+                    id: 1,
+                    name: 'Lady D-joy 스몰 백',
+                    category: '가방',
+                    price: 7300000,
+                    stock: 5,
+                    imageUrl: 'https://assets.christiandior.com/is/image/diorprod/M9252PHPAM030_E01?$default_GHC$&crop=275,967,1363,909&wid=720&hei=778&scale=0.3405&bfc=on&qlt=85',
+                    registrationDate: '2025-09-18'
+                },
+                {
+                    id: 2,
+                    name: 'D-Motion 미디엄 백',
+                    category: '가방',
+                    price: 5900000,
+                    stock: 2,
+                    imageUrl: 'https://assets.christiandior.com/is/image/diorprod/M2852PMJQM900_E03?$default_GHC$&crop=607,173,787,1640&wid=720&hei=778&scale=0.3405&bfc=on&qlt=85',
+                    registrationDate: '2025-09-15'
+                },
+                {
+                    id: 3,
+                    name: '디올 어딕트 립 글로우',
+                    category: '화장품',
+                    price: 50000,
+                    stock: 50,
+                    imageUrl: 'https://www.dior.com/dw/image/v2/BGXS_PRD/on/demandware.static/-/Sites-master_dior/default/dw79518376/Y0457000/Y0457000_C045700001_E01_RHC.jpg?sw=640',
+                    registrationDate: '2025-09-10'
+                },
+                {
+                    id: 4,
+                    name: '미스 디올 오 드 퍼퓸',
+                    category: '향수',
+                    price: 125000,
+                    stock: 30,
+                    imageUrl: 'https://www.dior.com/dw/image/v2/BGXS_PRD/on/demandware.static/-/Sites-master_dior/default/dw1d2e178b/Y0996347/Y0996347_C099600762_E01_RHC.jpg?sw=640',
+                    registrationDate: '2025-09-05'
+                },
+                {
+                    id: 5,
+                    name: 'B25 러너 스니커즈',
+                    category: '신발',
+                    price: 1250000,
+                    stock: 10,
+                    imageUrl: 'https://assets.christiandior.com/is/image/diorprod/3SN283ZMIH865_E03?$default_GHC$&crop=313,709,1375,844&wid=720&hei=778&scale=0.3405&bfc=on&qlt=85',
+                    registrationDate: '2025-09-01'
+                }
+            ];
+
+            const productContainer = document.getElementById('product-container');
+
+            function renderProducts() {
+                productContainer.innerHTML = '';
+                products.forEach(product => {
+                    const article = document.createElement('article');
+                    article.classList.add('product-card');
+                    article.setAttribute('role', 'listitem');
+                    article.setAttribute('aria-label', `${product.name} 상세 보기`);
+
+                    article.innerHTML = `
+                        <a href="view.html?id=${product.id}" class="product-link">
+                            <figure class="product-image">
+                                <img src="${product.imageUrl}" alt="${product.name}" />
+                            </figure>
+                            <div class="product-info">
+                                <h3 class="product-name">${product.name}</h3>
+                                <p class="product-price"><strong>${product.price.toLocaleString()} 원</strong></p>
+                                <div class="product-meta">
+                                    <span class="product-category">#${product.category}</span>
+                                    <span class="product-stock">재고: ${product.stock}</span>
+                                </div>
+                            </div>
+                        </a>
+                    `;
+                    productContainer.appendChild(article);
+                });
+            }
+
+            renderProducts();
+        });
+    </script>
+</body>
+
+</html>
